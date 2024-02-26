@@ -12,7 +12,7 @@ import android.widget.RadioGroup
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var radioGroup: RadioGroup // Declare radioGroup variable
+    private lateinit var radioGroup: RadioGroup 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
