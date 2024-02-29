@@ -1,21 +1,70 @@
 package com.example.whosthatpokemon
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 class NextPokemone1 : AppCompatActivity() {
+
+    private lateinit var radioGroup: RadioGroup
+    private lateinit var scoreTextView: TextView
+    private lateinit var scoreNumberTextView: TextView
+    private var score: Int = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_next_pokemone1)
 
-        val next_pokemon_button: Button = findViewById(R.id.submit_button4)
-        next_pokemon_button.setOnClickListener {
-            val intent = Intent(this@NextPokemone1, NextPokemone2::class.java)
+
+
+        radioGroup = findViewById(R.id.radioGroup)
+        scoreTextView = findViewById(R.id.scoreTextView)
+        scoreNumberTextView = findViewById(R.id.score_number)
+
+        scoreNumberTextView.text = intent.getIntExtra("SCORE_EXTRA", 0).toString()
+
+        addRadioButtonsToGroup()
+
+        val submitButton: Button = findViewById<Button>(R.id.submit_button)
+        submitButton.setOnClickListener {
+            val selectedRadioButtonId = radioGroup.checkedRadioButtonId
+            val correctAnswerId = R.id.pikachu
+
+            if (selectedRadioButtonId == correctAnswerId) {
+                score++
+                updateScore()
+            }
+
+            val intent = Intent(this@NextPokemone1, NextPokemon2::class.java)
+            intent.putExtra("SCORE_EXTRA", score)
             startActivity(intent)
         }
     }
+    private fun updateScore() {
+        scoreNumberTextView.text = score.toString()
+    }
+
+    private fun addRadioButtonsToGroup() {
+        val radioButtonIds = arrayOf(R.id.pikachu, R.id.dragonite, R.id.charizard, R.id.meowth)
+
+        for (radioButtonId in radioButtonIds) {
+            val radioButton = findViewById<RadioButton>(radioButtonId)
+            val parent = radioButton.parent as? ViewGroup
+            parent?.removeView(radioButton)
+            radioGroup.addView(radioButton)
+        }
+
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            for (radioButtonId in radioButtonIds) {
+                val radioButton = findViewById<RadioButton>(radioButtonId)
+                radioButton.isChecked = radioButton.id == checkedId
+            }
+        }
+    }
+
 }

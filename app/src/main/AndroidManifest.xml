@@ -35,7 +35,7 @@
             android:theme="@style/Theme.WhosThatPokemon" />
 
         <activity
-            android:name=".NextPokemone2"
+            android:name=".NextPokemon2"
             android:exported="false" />
 
         <activity
